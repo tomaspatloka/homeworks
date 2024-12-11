@@ -25,16 +25,16 @@
             Book book3 = new Book("To", "Stephen King", 1000);
             book1.Read(50);
             book2.Read(100);
-           // book3.Read(350);
+            book3.Read(350);
 
             book1.DisplayProgress();
             book2.DisplayProgress();
-           // book3.DisplayProgress();
+            book3.DisplayProgress();
 
             // Přečtení více stránek než ná kniha
             book1.Read(200);
             book1.DisplayProgress();
-            // book3.Read(1200);
+            book3.Read(1200);
         }
     }
 }
