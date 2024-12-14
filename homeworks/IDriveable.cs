@@ -1,6 +1,6 @@
 ﻿namespace homeworks
 {
-    interface IDriveable
+    public interface IDriveable
     {
         void Drive();
     }
