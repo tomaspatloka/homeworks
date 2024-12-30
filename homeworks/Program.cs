@@ -16,16 +16,16 @@ namespace Lekce10
         {
             var random = new Random();
             var names = new List<string>
-            { "Alice ",
-              "Bob ",
-              "Charlie ",
-              "Diana ",
-              "Edward ",
-              "Fiona ",
-              "George ",
-              "Hannah ",
-              "Ian ",
-              "Julia "
+            { "Alice_",
+              "Bob_",
+              "Charlie_",
+              "Diana_",
+              "Edward_",
+              "Fiona_",
+              "George_",
+              "Hannah_",
+              "Ian_",
+              "Julia_"
             };
 
             var students = new List<Student>();
@@ -57,32 +57,29 @@ namespace Lekce10
             }
 
             Console.WriteLine();
-            Console.WriteLine("2. Seznam jmen studentů kteří mají alespoň jednu známku vyšší než 90: ");
+            Console.WriteLine("2. Seznam jmen studentů kteří mají alespoň jednu známku vyšší než 90:");
             var studentiSVysokouZnamkou = students.Where(s => s.Grades.Any(g => g > 90));
             foreach (var student in studentiSVysokouZnamkou)
             {
-                Console.WriteLine(student.Name + string.Join(", ", student.Grades));
-
+                Console.WriteLine(student.Name + ": " + string.Join(" , ", student.Grades));
+               
             }
 
             Console.WriteLine();
             Console.WriteLine("3. Studenti se všemi známkami nad 80:");
-            var studentiNad80 = students.Where(s => s.Grades.All(g => g > 80)).ToList();
+            var existujeStudentNad80 = students.Any(s => s.Grades.All(g => g > 80));
 
-            if (studentiNad80.Any())
+            if (existujeStudentNad80)
             {
+                var studentiNad80 = students.Where(s => s.Grades.All(g => g > 80));
                 foreach (var student in studentiNad80)
                 {
-                    Console.WriteLine("Student {0}: známky {1}",
-                        student.Name,
-                        string.Join(", ", student.Grades),
-                        student.Grades.Average());
+                    Console.WriteLine(student.Name + ": " + string.Join(" , ", student.Grades));
                 }
-                Console.WriteLine("Celkový počet nalezených studentů:" + (studentiNad80.Count));
             }
             else
             {
-                Console.WriteLine("Nebyl nalezen žádný student s všemi známkami nad 80.");
+                Console.WriteLine("Neexistuje žádný student se všemi známkami nad 80.");
             }
 
 
