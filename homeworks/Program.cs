@@ -40,13 +40,35 @@ namespace WeatherApp
 
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                
+                WeatherData pocasi = ZpracujOdpoved(responseBody);
+                ZobrazPocasi(pocasi);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Nastala chyba: " + e.Message);
             }
         }
+
+        private static WeatherData ZpracujOdpoved(string jsonOdpoved)
+        {
+            using (JsonDocument dokument = JsonDocument.Parse(jsonOdpoved))
+            {
+                JsonElement root = dokument.RootElement;
+
+                return new WeatherData
+                {
+                    Mesto = root.GetProperty("location").GetProperty("name").GetString(),
+                    Teplota = root.GetProperty("current").GetProperty("temp_c").GetDouble(),
+                    StavPocasi = root.GetProperty("current").GetProperty("condition").GetProperty("text").GetString(),
+                    RychlostVetru = root.GetProperty("current").GetProperty("wind_kph").GetDouble(),
+                    Vlhkost = root.GetProperty("current").GetProperty("humidity").GetInt32(),
+                    Aktualizace = root.GetProperty("current").GetProperty("last_updated").GetString()
+                };
+            }
+        }
+
+              
+
 
         
     }
