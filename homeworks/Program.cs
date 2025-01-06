@@ -35,12 +35,12 @@ namespace WeatherApp
                 string url = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + mesto + "&aqi=no" + "&lang=cs ";
 
                 Console.WriteLine("Stahuji data o pocasi...");
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();
+                HttpResponseMessage odpoved = await client.GetAsync(url);
+                odpoved.EnsureSuccessStatusCode();
 
-                string responseBody = await response.Content.ReadAsStringAsync();
+                string odpovedTelo = await odpoved.Content.ReadAsStringAsync();
 
-                WeatherData pocasi = ZpracujOdpoved(responseBody);
+                WeatherData pocasi = ZpracujOdpoved(odpovedTelo);
                 ZobrazPocasi(pocasi);
             }
             catch (Exception e)
@@ -53,16 +53,16 @@ namespace WeatherApp
         {
             using (JsonDocument dokument = JsonDocument.Parse(jsonOdpoved))
             {
-                JsonElement root = dokument.RootElement;
+                JsonElement apiData = dokument.RootElement;
 
                 return new WeatherData
                 {
-                    Mesto = root.GetProperty("location").GetProperty("name").GetString(),
-                    Teplota = root.GetProperty("current").GetProperty("temp_c").GetDouble(),
-                    StavPocasi = root.GetProperty("current").GetProperty("condition").GetProperty("text").GetString(),
-                    RychlostVetru = root.GetProperty("current").GetProperty("wind_kph").GetDouble(),
-                    Vlhkost = root.GetProperty("current").GetProperty("humidity").GetInt32(),
-                    Aktualizace = root.GetProperty("current").GetProperty("last_updated").GetString()
+                    Mesto = apiData.GetProperty("location").GetProperty("name").GetString(),
+                    Teplota = apiData.GetProperty("current").GetProperty("temp_c").GetDouble(),
+                    StavPocasi = apiData.GetProperty("current").GetProperty("condition").GetProperty("text").GetString(),
+                    RychlostVetru = apiData.GetProperty("current").GetProperty("wind_kph").GetDouble(),
+                    Vlhkost = apiData.GetProperty("current").GetProperty("humidity").GetInt32(),
+                    Aktualizace = apiData.GetProperty("current").GetProperty("last_updated").GetString()
                 };
             }
         }
@@ -70,6 +70,14 @@ namespace WeatherApp
               
 
 
-        
+        private static void ZobrazPocasi(WeatherData pocasi)
+        {
+            Console.WriteLine("Aktualni počasí pro město: " + pocasi.Mesto);
+            Console.WriteLine("Teplota: " + pocasi.Teplota + " °C");
+            Console.WriteLine("Stav počasi: " + pocasi.StavPocasi);
+            Console.WriteLine("Rychlost větru: " + pocasi.RychlostVetru + " km/h");
+            Console.WriteLine("Vlhkost: " + pocasi.Vlhkost + " %");
+            Console.WriteLine("Posledni aktualizace: " + pocasi.Aktualizace);
+        }
     }
 }
