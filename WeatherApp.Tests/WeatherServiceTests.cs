@@ -30,9 +30,9 @@ namespace WeatherApp.Tests
             _weatherServiceMock
                 .Setup(x => x.GetWeatherDataAsync("Praha"))
                 .ReturnsAsync(expectedData);
-            
+
             var result = await _weatherServiceMock.Object.GetWeatherDataAsync("Praha");
-            
+
             Assert.That(result.Mesto, Is.EqualTo("Praha"), "Město by měloi být Praha");
             Assert.That(result.Teplota, Is.EqualTo(20.5), "Teplota by měla být 20.5");
             Assert.That(result.StavPocasi, Is.EqualTo("Slunečno"), "Stav počasí by měl být Slunečno");
